@@ -45,10 +45,15 @@ fn read_range() anyerror!std.meta.Tuple(&.{ u8, u8 }) {
 
 fn guessed(n: u32) bool {
     if (n == ans) {
-        stdout.print("Congratulations!\n", .{});
+        stdout.print("Correct! Congratulations!\n", .{});
         return true;
     }
-    stdout.print("Wrong answer :( Try again.\n", .{});
+
+    if (n < ans) {
+        stdout.print("Too low!\n", .{});
+    } else {
+        stdout.print("Too high!\n", .{});
+    }
     return false;
 }
 
