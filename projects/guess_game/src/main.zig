@@ -3,7 +3,6 @@ const std = @import("std");
 const stdout = std.debug;
 const stdin = std.io.getStdIn().reader();
 
-const MAX_GAME_NUMBER: u32 = 256;
 var ans: u32 = undefined;
 
 fn read_u8() anyerror!u8 {
