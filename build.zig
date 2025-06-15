@@ -15,6 +15,15 @@ pub fn build(b: *std.Build) void {
 
     b.installArtifact(guess_game);
 
+    const tetris = b.addExecutable(.{
+        .name = "tetris",
+        .root_source_file = b.path("projects/tetris/src/main.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+
+    b.installArtifact(tetris);
+
     // Snippets
     const raw_stdio = b.addExecutable(.{
         .name = "raw_stdio",
