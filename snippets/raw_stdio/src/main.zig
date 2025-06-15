@@ -88,14 +88,19 @@ pub fn main() !void {
             cur_termios.c_cc[c.VTIME] = 0;
             cur_termios.c_cc[c.VMIN] = 1;
             _ = c.tcsetattr(tty.handle, c.TCSANOW, &cur_termios);
+            stderr.print("input: ", .{});
             if (esc_read == 0) {
-                stderr.print("input: escape\r\n", .{});
+                stderr.print("escape\r\n", .{});
             } else if (mem.eql(u8, esc_buffer[0..esc_read], "[A")) {
-                stderr.print("input: arrow up\r\n", .{});
+                stderr.print("arrow up\r\n", .{});
             } else if (mem.eql(u8, esc_buffer[0..esc_read], "[B")) {
-                stderr.print("input: arrow down\r\n", .{});
+                stderr.print("arrow down\r\n", .{});
+            } else if (mem.eql(u8, esc_buffer[0..esc_read], "[C")) {
+                stderr.print("arrow right\r\n", .{});
+            } else if (mem.eql(u8, esc_buffer[0..esc_read], "[D")) {
+                stderr.print("arrow left\r\n", .{});
             } else {
-                stderr.print("input: unknown escape sequence\r\n", .{});
+                stderr.print("unknown escape sequence\r\n", .{});
             }
         } else if (buffer[0] == '\n' or buffer[0] == '\r') {
             stderr.print("input: return\r\n", .{});
