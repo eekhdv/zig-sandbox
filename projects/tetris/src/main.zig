@@ -32,20 +32,28 @@ fn input(tty: *fs.File, termios: *c.termios) !Direction {
     termios.*.c_cc[c.VTIME] = 0;
     termios.*.c_cc[c.VMIN] = 1;
     _ = c.tcsetattr(tty.handle, c.TCSANOW, termios);
-    if (mem.eql(u8, esc_buffer[0..esc_read], "[A")) {
-        stderr.print("arrow up\r\n", .{});
-        return .up;
-    } else if (mem.eql(u8, esc_buffer[0..esc_read], "[B")) {
-        stderr.print("arrow down\r\n", .{});
-        return .down;
-    } else if (mem.eql(u8, esc_buffer[0..esc_read], "[C")) {
-        stderr.print("arrow right\r\n", .{});
-        return .right;
-    } else if (mem.eql(u8, esc_buffer[0..esc_read], "[D")) {
-        stderr.print("arrow left\r\n", .{});
-        return .left;
+    if (esc_read == 2) {
+        switch (esc_buffer[1]) {
+            'A' => {
+                stderr.print("arrow up\r\n", .{});
+                return .up;
+            },
+            'B' => {
+                stderr.print("arrow down\r\n", .{});
+                return .down;
+            },
+            'C' => {
+                stderr.print("arrow right\r\n", .{});
+                return .right;
+            },
+            'D' => {
+                stderr.print("arrow left\r\n", .{});
+                return .left;
+            },
+            else => return error.UnknownEscapeKey,
+        }
     }
-    return error.UnknownEscapeKey;
+    unreachable;
 }
 
 fn update() !void {
