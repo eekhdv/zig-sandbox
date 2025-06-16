@@ -68,7 +68,7 @@ pub fn main() !void {
     cur_termios.c_cc[c.VTIME] = 0;
     cur_termios.c_cc[c.VMIN] = 1;
 
-    _ = c.tcsetattr(tty.handle, c.FLUSHO, &cur_termios);
+    _ = c.tcsetattr(tty.handle, c.TCSAFLUSH, &cur_termios);
 
     while (true) {
         var buffer: [1]u8 = undefined;
